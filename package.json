@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build:go": "esbuild src/go/client.ts --bundle --minify --banner:js=//auto-generated --outfile=internal/build/out.js",
-    "build:js": "esbuild src/main.ts --bundle --minify --platform=node --outfile=lib/main.js",
+    "build:js": "esbuild src/main.ts --bundle --minify --platform=node --define:WASM=false --outfile=lib/main.js",
     "build:types": "mkdir -p lib && cp src/shared/types.ts lib/main.d.ts"
   },
   "devDependencies": {
