@@ -1,7 +1,7 @@
 import { createSnackbar } from '@snackbar/core'
 import '@snackbar/core/dist/snackbar.css'
 
-console.log('[yal-server] init')
+console.log('[yalive-server] init')
 
 if ('WebSocket' in window) {
   window.addEventListener('load', () => {
@@ -9,8 +9,8 @@ if ('WebSocket' in window) {
     const host = 'localhost:{{port}}'
     const address = `${protocol}//${host}`
 
-    const CONNECTING_MSG = '[yal-server] connecting...'
-    const CONNECTED_MSG = '[yal-server] connected.'
+    const CONNECTING_MSG = '[yalive-server] connecting...'
+    const CONNECTED_MSG = '[yalive-server] connected.'
     const MAX_ATTEMPTS = 30
 
     let wait = 1000
@@ -88,7 +88,7 @@ if ('WebSocket' in window) {
       }
       socket.onclose = function (e) {
         if (attempts === 0) {
-          console.log('[yal-server] socket closed: ', e.reason)
+          console.log('[yalive-server] socket closed: ', e.reason)
           createSnackbar('Lost connection to dev server...')
         }
 
@@ -98,7 +98,7 @@ if ('WebSocket' in window) {
           if (attempts <= MAX_ATTEMPTS) {
             connect()
           } else {
-            console.log('[yal-server] reconnection stopped.')
+            console.log('[yalive-server] reconnection stopped.')
             return
           }
           wait = Math.floor(wait * 1.1)

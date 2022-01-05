@@ -22,10 +22,10 @@ import (
 	"go.uber.org/atomic"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/yckbilly1929/yal-server/internal/cert"
-	"github.com/yckbilly1929/yal-server/internal/debounce"
-	"github.com/yckbilly1929/yal-server/internal/logger"
-	"github.com/yckbilly1929/yal-server/internal/middleware"
+	"github.com/yckbilly1929/yalive-server/internal/cert"
+	"github.com/yckbilly1929/yalive-server/internal/debounce"
+	"github.com/yckbilly1929/yalive-server/internal/logger"
+	"github.com/yckbilly1929/yalive-server/internal/middleware"
 )
 
 var (

@@ -1,4 +1,4 @@
-Yal Server
+Yalive Server
 ===========
 
 Minimal Development Server with **Live Reload** Capability.  
@@ -22,10 +22,10 @@ Get Started
 
 ```bash
   # Global
-  $ npm i -g yal-server
+  $ npm i -g yalive-server
 
   # As node package
-  $ npm i -D yal-server
+  $ npm i -D yalive-server
 ```
 
 Usage from command line
@@ -33,17 +33,17 @@ Usage from command line
 
 ```bash
   # Help
-  $ yal-server
+  $ yalive-server
 
   # example dev command
-  $ yal-server dev -c='{"root": "dist", "port": 5501, "cors": true, "https": true, "historyApiFallback": true, "proxy": [{"prefix": "/api", "target": "https://backend", "changeOrigin": true}]}'
+  $ yalive-server dev -c='{"root": "dist", "port": 5501, "cors": true, "https": true, "historyApiFallback": true, "proxy": [{"prefix": "/api", "target": "https://backend", "changeOrigin": true}]}'
 ```
 
 Usage from node
 ---------------
 
 ```javascript
-const yalServer = require("yal-server")
+const yalServer = require("yalive-server")
 
 const conf = {
   root: 'dist',

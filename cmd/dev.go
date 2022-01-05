@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/yckbilly1929/yal-server/app/server"
+	"github.com/yckbilly1929/yalive-server/app/server"
 )
 
 var (

@@ -13,11 +13,8 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: 'module',
   },
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'plugin:prettier/recommended'],
+  plugins: ['import'],
   rules: {
     'import/extensions': [
       'error',

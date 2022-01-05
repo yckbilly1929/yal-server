@@ -11,7 +11,7 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 
-	"github.com/yckbilly1929/yal-server/internal/logger"
+	"github.com/yckbilly1929/yalive-server/internal/logger"
 )
 
 func serveFileContents(filePath string, dir http.Dir) http.HandlerFunc {

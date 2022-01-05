@@ -4,7 +4,7 @@ import (
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 
-	"github.com/yckbilly1929/yal-server/internal/logger"
+	"github.com/yckbilly1929/yalive-server/internal/logger"
 )
 
 func genNotifyWsFunc(payload []byte) func() {

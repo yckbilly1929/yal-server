@@ -5,7 +5,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 
-	"github.com/yckbilly1929/yal-server/internal/logger"
+	"github.com/yckbilly1929/yalive-server/internal/logger"
 )
 
 func reverseHandler(p ProxyMiddleware) func(w http.ResponseWriter, r *http.Request) {

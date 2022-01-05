@@ -1,4 +1,4 @@
-BINARY ?= yal-server
+BINARY ?= yalive-server
 
 test:
 	go test ./...

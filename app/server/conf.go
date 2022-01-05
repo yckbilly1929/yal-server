@@ -73,12 +73,12 @@ func getCacheDir(sc ServeConfig) (string, error) {
 
 	if !isNodePkg {
 		// TODO
-		return ".cache/yal-server", nil
+		return ".cache/yalive-server", nil
 	}
 	if sc.IsYarn {
 		// TODO
-		return ".yarn/.cache/yal-server", nil
+		return ".yarn/.cache/yalive-server", nil
 	}
 
-	return "node_modules/.cache/yal-server", nil
+	return "node_modules/.cache/yalive-server", nil
 }

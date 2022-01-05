@@ -6,8 +6,8 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "yal-server",
-	Short: "cli for yal-server",
+	Use:   "yalive-server",
+	Short: "cli for yalive-server",
 	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:

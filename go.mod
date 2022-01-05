@@ -1,4 +1,4 @@
-module github.com/yckbilly1929/yal-server
+module github.com/yckbilly1929/yalive-server
 
 go 1.17
 

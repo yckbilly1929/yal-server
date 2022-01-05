@@ -1,11 +1,11 @@
 {
-  "name": "yal-server",
+  "name": "yalive-server",
   "version": "0.1.0",
   "description": "Yet Another Live Server.",
   "main": "lib/main.js",
   "types": "lib/main.d.ts",
   "bin": {
-    "yal-server": "bin/yal-server"
+    "yalive-server": "bin/yalive-server"
   },
   "engines": {
     "node": ">=16"
@@ -18,7 +18,7 @@
     "path": "path-browserify"
   },
   "scripts": {
-    "build:go": "esbuild src/go/client.ts --bundle --minify --banner:js=//auto-generated --outfile=internal/build/out.js",
+    "build:go": "esbuild src/go/client.ts --bundle --minify --banner:js=//auto-generated --outfile=app/server/build/out.js",
     "build:js": "esbuild src/main.ts --bundle --minify --platform=node --define:WASM=false --outfile=lib/main.js",
     "build:types": "mkdir -p lib && cp src/shared/types.ts lib/main.d.ts"
   },
@@ -41,14 +41,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yckbilly1929/yal-server.git"
+    "url": "git+https://github.com/yckbilly1929/yalive-server.git"
   },
   "author": "Billy Yip (https://github.com/yckbilly1929)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yckbilly1929/yal-server/issues"
+    "url": "https://github.com/yckbilly1929/yalive-server/issues"
   },
-  "homepage": "https://github.com/yckbilly1929/yal-server#readme",
+  "homepage": "https://github.com/yckbilly1929/yalive-server#readme",
   "keywords": [
     "live-server",
     "live",
