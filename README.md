@@ -36,7 +36,7 @@ Usage from command line
   $ yal-server
 
   # example dev command
-  $ yal-server dev -c='{"root": "dist", "port": 5501, "cors": true, "https": true, "fallback": true, "proxy": [{"prefix": "/api", "target": "https://backend", "changeOrigin": true}]}'
+  $ yal-server dev -c='{"root": "dist", "port": 5501, "cors": true, "https": true, "historyApiFallback": true, "proxy": [{"prefix": "/api", "target": "https://backend", "changeOrigin": true}]}'
 ```
 
 Usage from node
@@ -50,7 +50,7 @@ const conf = {
   port: 5501,
   cors: true,
   https: true,
-  fallback: true,
+  historyApiFallback: true,
   proxy: [],
 }
 

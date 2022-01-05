@@ -1,21 +1,57 @@
 {
   "name": "yal-server",
   "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build:inject": "esbuild src/client.ts --bundle --minify --banner:js=//auto-generated --outfile=internal/build/out.js"
+  "description": "Yet Another Live Server.",
+  "main": "lib/main.js",
+  "types": "lib/main.d.ts",
+  "bin": {
+    "yal-server": "bin/yal-server"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "esbuild": "^0.14.10",
-    "path-browserify": "^1.0.1"
+  "engines": {
+    "node": ">=16"
   },
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
   "browser": {
     "path": "path-browserify"
   },
+  "scripts": {
+    "build:go": "esbuild src/go/client.ts --bundle --minify --banner:js=//auto-generated --outfile=internal/build/out.js",
+    "build:js": "esbuild src/main.ts --bundle --minify --platform=node --outfile=lib/main.js",
+    "build:types": "mkdir -p lib && cp src/shared/types.ts lib/main.d.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "esbuild": "^0.14.10",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "path-browserify": "^1.0.1",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
+  },
   "dependencies": {
     "@snackbar/core": "^1.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yckbilly1929/yal-server.git"
+  },
+  "author": "Billy Yip (https://github.com/yckbilly1929)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yckbilly1929/yal-server/issues"
+  },
+  "homepage": "https://github.com/yckbilly1929/yal-server#readme",
+  "keywords": [
+    "live-server",
+    "live",
+    "reload"
+  ]
 }

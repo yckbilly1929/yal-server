@@ -60,6 +60,9 @@ var (
 
 func Run(sc ServeConfig) {
 	// TODO: validate config
+	if sc.Port == 0 {
+		sc.Port = 5501
+	}
 	if sc.Root == "" {
 		sc.Root = defaultRootDir
 	}
