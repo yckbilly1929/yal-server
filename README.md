@@ -43,7 +43,7 @@ Usage from node
 ---------------
 
 ```javascript
-const yalServer = require("yalive-server")
+const yaliveServer = require("yalive-server")
 
 const conf = {
   root: 'dist',
@@ -54,5 +54,5 @@ const conf = {
   proxy: [],
 }
 
-yalServer.dev(conf)
+yaliveServer.dev(conf)
 ```

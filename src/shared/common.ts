@@ -1,4 +1,4 @@
 export interface Refs {
-  ref(): void;
-  unref(): void;
+  ref(): void
+  unref(): void
 }

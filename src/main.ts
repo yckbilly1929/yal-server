@@ -22,8 +22,9 @@ const yaliveCommandAndArgs = (): [string, string[]] => {
     (path.basename(__filename) !== 'main.js' || path.basename(__dirname) !== 'lib')
   ) {
     throw new Error(
+      /* eslint-disable quotes */
       'The yalive-server JavaScript API cannot be bundled. Please mark the "yalive-server" ' +
-        'package as external so it\'s not included in the bundle.\n' +
+        "package as external so it's not included in the bundle.\n" +
         '\n' +
         "More information: The file containing the code for yalive-server's JavaScript " +
         `API (${__filename}) does not appear to be inside the yalive-server package on ` +
@@ -31,8 +32,9 @@ const yaliveCommandAndArgs = (): [string, string[]] => {
         'into another file. This is problematic because the API needs to run a ' +
         'binary executable inside the yalive-server package which is located using a ' +
         'relative path from the API code to the executable. If the yalive-server package ' +
-        'is bundled, the relative path will be incorrect and the executable won\'t ' +
+        "is bundled, the relative path will be incorrect and the executable won't " +
         'be found.'
+      /* eslint-enable quotes */
     )
   }
 

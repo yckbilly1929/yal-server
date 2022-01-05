@@ -21,7 +21,7 @@ if ('WebSocket' in window) {
       const head = document.getElementsByTagName('head')[0]
 
       let sheets = Array.from(document.getElementsByTagName('link'))
-      sheets = sheets.filter(sheet => /\.css/gm.test(sheet.href) || sheet.rel.toLowerCase() == 'stylesheet')
+      sheets = sheets.filter((sheet) => /\.css/gm.test(sheet.href) || sheet.rel.toLowerCase() === 'stylesheet')
 
       for (let i = 0; i < sheets.length; ++i) {
         const el = sheets[i]
