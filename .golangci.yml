@@ -1,0 +1,47 @@
+# options for analysis running
+run:
+  # exit code when at least one issue was found, default is 1
+  issues-exit-code: 1
+
+# all available settings of specific linters
+linters-settings:
+  exhaustive:
+    # check switch statements in generated files also
+    check-generated: false
+    # indicates that switch statements are to be considered exhaustive if a
+    # 'default' case is present, even if all enum members aren't listed in the
+    # switch
+    default-signifies-exhaustive: false
+  gocritic:
+    # Which checks should be disabled; can't be combined with 'enabled-checks'; default is empty
+    disabled-checks:
+      - ifElseChain
+  goimports:
+    # put imports beginning with prefix after 3rd-party packages;
+    # it's a comma-separated list of prefixes
+    local-prefixes: github.com/yckbilly1929/yal-server
+  lll:
+    # max line length, lines longer will be reported. Default is 120.
+    # '\t' is counted as 1 character by default, and can be changed with the tab-width option
+    line-length: 120
+
+# all available linters
+linters:
+  enable:
+    - exhaustive
+    - gocritic
+    - goimports
+    - gosec
+    - lll
+
+# post handling of issues
+issues:
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    # Exclude some staticcheck messages
+    - linters:
+        - staticcheck
+      text: "SA9003:"
+    - linters:
+        - gosec
+      text: "weak cryptographic primitive"

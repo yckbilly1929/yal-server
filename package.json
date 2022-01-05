@@ -1,0 +1,21 @@
+{
+  "name": "yal-server",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:inject": "esbuild src/client.ts --bundle --minify --banner:js=//auto-generated --outfile=internal/build/out.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.14.10",
+    "path-browserify": "^1.0.1"
+  },
+  "browser": {
+    "path": "path-browserify"
+  },
+  "dependencies": {
+    "@snackbar/core": "^1.7.0"
+  }
+}
