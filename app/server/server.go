@@ -22,6 +22,7 @@ import (
 	"go.uber.org/atomic"
 	"golang.org/x/sync/errgroup"
 
+	"github.com/yckbilly1929/yal-server/internal/cert"
 	"github.com/yckbilly1929/yal-server/internal/debounce"
 	"github.com/yckbilly1929/yal-server/internal/logger"
 	"github.com/yckbilly1929/yal-server/internal/middleware"
@@ -40,10 +41,11 @@ var (
 	wsRefreshCssPayload      = []byte("refresh-css")
 	wsRefreshCssPopupPayload = []byte("refresh-css-popup")
 
-	defaultRootDir      = "dist"
-	defaultRootFile     = "index.html"
-	defaultCertFilePath = "./server.crt"
-	defaultKeyFilePath  = "./server.key"
+	defaultRootDir  = "dist"
+	defaultRootFile = "index.html"
+	defaultCertFile = "server.crt"
+	defaultKeyFile  = "server.key"
+	nodePkgFile     = "package.json"
 
 	headEnd     = []byte("</head>")
 	bodyEnd     = []byte("</body>")
@@ -65,7 +67,36 @@ func Run(sc ServeConfig) {
 		sc.File = defaultRootFile
 	}
 	if sc.HTTPS {
-		// TODO: create fake cert, check has package.json / is yarn, set filePath
+		cacheDir, err := getCacheDir(sc)
+		if err != nil {
+			panic(err)
+		}
+		if sc.Server.Cert != "" {
+			sc.Internal.CertPath = cacheDir + "/" + sc.Server.Cert
+		} else {
+			sc.Internal.CertPath = cacheDir + "/" + defaultCertFile
+		}
+		if sc.Server.Key != "" {
+			sc.Internal.KeyPath = cacheDir + "/" + sc.Server.Key
+		} else {
+			sc.Internal.KeyPath = cacheDir + "/" + defaultKeyFile
+		}
+
+		err = os.MkdirAll(cacheDir, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+
+		opt := cert.CertOpt{
+			CertPath: sc.Internal.CertPath,
+			KeyPath:  sc.Internal.KeyPath,
+		}
+		if !cert.Verify(opt) {
+			err = cert.Generate(opt)
+			if err != nil {
+				panic(err)
+			}
+		}
 	}
 
 	// init
@@ -106,7 +137,7 @@ func Run(sc ServeConfig) {
 
 	rootHandler := serveFileContents(defaultRootFile, rootDir)
 
-	if sc.Fallback {
+	if sc.HistoryApiFallback {
 		r.Get("/", rootHandler)
 		r.Get("/*", middleware.Intercept404(fs, rootHandler))
 	} else {
@@ -202,7 +233,7 @@ func startApp(sc *ServeConfig, httpServer *http.Server, wsServer *http.Server, w
 		slog.Info("http server will start")
 		var err error
 		if sc.HTTPS {
-			err = httpServer.ListenAndServeTLS(defaultCertFilePath, defaultKeyFilePath)
+			err = httpServer.ListenAndServeTLS(sc.Internal.CertPath, sc.Internal.KeyPath)
 		} else {
 			err = httpServer.ListenAndServe()
 		}
@@ -222,7 +253,7 @@ func startApp(sc *ServeConfig, httpServer *http.Server, wsServer *http.Server, w
 		}
 		wsPort = listener.Addr().(*net.TCPAddr).Port
 		if sc.HTTPS {
-			err = wsServer.ServeTLS(listener, defaultCertFilePath, defaultKeyFilePath)
+			err = wsServer.ServeTLS(listener, sc.Internal.CertPath, sc.Internal.KeyPath)
 		} else {
 			err = wsServer.Serve(listener)
 		}

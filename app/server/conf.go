@@ -2,23 +2,34 @@ package server
 
 import (
 	"crypto/tls"
+	"errors"
+	"io/fs"
 	"net/http"
+	"os"
 )
 
 type ServeConfig struct {
-	Port     uint   `json:"port"`
-	Root     string `json:"root"`
-	File     string `json:"file"`
-	CORS     bool   `json:"cors"`
-	HTTPS    bool   `json:"https"`
-	Fallback bool   `json:"fallback"`
+	Port               uint   `json:"port"`
+	Root               string `json:"root"`
+	File               string `json:"file"`
+	CORS               bool   `json:"cors"`
+	HTTPS              bool   `json:"https"`
+	HistoryApiFallback bool   `json:"historyApiFallback"`
 
 	Proxy []ProxyMiddleware `json:"proxy"`
 
 	// TODO
 	Host   string `json:"host"`
-	IsDir  bool   `json:"isDir"`
 	IsYarn bool   `json:"isYarn"`
+	Server Server `json:"server"`
+
+	Internal internalConfig `json:"-"`
+}
+
+type Server struct {
+	// file name only, not path
+	Cert string `json:"cert"`
+	Key  string `json:"key"`
 }
 
 type ProxyMiddleware struct {
@@ -26,6 +37,11 @@ type ProxyMiddleware struct {
 	Target       string `json:"target"`
 	ChangeOrigin bool   `json:"changeOrigin"`
 	Secure       bool   `json:"secure"`
+}
+
+type internalConfig struct {
+	CertPath string `json:"-"`
+	KeyPath  string `json:"-"`
 }
 
 func getInsecureTransport() http.RoundTripper {
@@ -37,4 +53,32 @@ func getInsecureTransport() http.RoundTripper {
 	})
 
 	return insecureTransport
+}
+
+func getCacheDir(sc ServeConfig) (string, error) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	// TODO: check if package.json
+	isNodePkg := true
+	_, err = os.Stat(cwd + "/" + nodePkgFile)
+	if err != nil {
+		if !errors.Is(err, fs.ErrNotExist) {
+			return "", err
+		}
+		isNodePkg = false
+	}
+
+	if !isNodePkg {
+		// TODO
+		return ".cache/yal-server", nil
+	}
+	if sc.IsYarn {
+		// TODO
+		return ".yarn/.cache/yal-server", nil
+	}
+
+	return "node_modules/.cache/yal-server", nil
 }
