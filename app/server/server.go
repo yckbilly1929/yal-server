@@ -103,7 +103,10 @@ func Run(sc ServeConfig) {
 	}
 
 	// init
-	llog, err := logger.New(false)
+	llog, err := logger.New(logger.LoggerOpt{
+		Debug: sc.Server.Debug,
+		Color: sc.Server.Color,
+	})
 	if err != nil {
 		panic(err)
 	}

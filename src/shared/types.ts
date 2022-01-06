@@ -7,7 +7,6 @@ export interface DevOptions {
   historyApiFallback?: boolean
 
   proxy?: ProxyMiddleware[]
-
   server?: Server
 }
 
@@ -19,8 +18,13 @@ export interface ProxyMiddleware {
 }
 
 export interface Server {
-  cert: string
-  key: string
+  // cert file name
+  cert?: string
+  key?: string
+
+  // logger
+  debug?: boolean
+  color?: boolean
 }
 
 export declare function dev(options: DevOptions): Promise<void>

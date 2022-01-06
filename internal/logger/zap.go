@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var (
@@ -11,14 +12,28 @@ var (
 	compatLogger *log.Logger
 )
 
-func New(isProd bool) (*zap.Logger, error) {
+type LoggerOpt struct {
+	Debug bool
+	Color bool
+
+	// TODO
+	Encoding string
+}
+
+func New(opt LoggerOpt) (*zap.Logger, error) {
 	var zapConfig zap.Config
 
-	if isProd {
-		zapConfig = zap.NewProductionConfig()
-	} else {
+	if opt.Debug {
 		zapConfig = zap.NewDevelopmentConfig()
+		if opt.Color {
+			zapConfig.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+		}
+	} else {
+		zapConfig = zap.NewProductionConfig()
+		zapConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+		zapConfig.DisableCaller = true
 	}
+	zapConfig.Encoding = "console"
 
 	var err error
 	logger, err = zapConfig.Build()

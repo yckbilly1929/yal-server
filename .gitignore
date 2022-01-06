@@ -39,4 +39,4 @@ pnpm-debug.log*
 
 # custom
 **/build
-yalive-server
+yalive-server*

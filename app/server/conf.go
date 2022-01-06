@@ -16,12 +16,12 @@ type ServeConfig struct {
 	HTTPS              bool   `json:"https"`
 	HistoryApiFallback bool   `json:"historyApiFallback"`
 
-	Proxy []ProxyMiddleware `json:"proxy"`
+	Proxy  []ProxyMiddleware `json:"proxy"`
+	Server Server            `json:"server"`
 
 	// TODO
 	Host   string `json:"host"`
 	IsYarn bool   `json:"isYarn"`
-	Server Server `json:"server"`
 
 	Internal internalConfig `json:"-"`
 }
@@ -30,6 +30,10 @@ type Server struct {
 	// file name only, not path
 	Cert string `json:"cert"`
 	Key  string `json:"key"`
+
+	// logger
+	Debug bool `json:"debug"`
+	Color bool `json:"color"`
 }
 
 type ProxyMiddleware struct {

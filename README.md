@@ -11,17 +11,17 @@ Roadmap
 --------
 
 - github actions
-- npm publish
+- npm install test on Windows and OSX
 - support recursive watch
 - accept json config file, and more dynamic config options like live-server
-- refresh css only / possibility to support HMR
+- refresh css only
 - example project with esbuild
 
 Get Started
 ------------
 
 ```bash
-  # Global
+  # global
   $ npm i -g yalive-server
 
   # As node package
@@ -36,7 +36,7 @@ Usage from command line
   $ yalive-server
 
   # example dev command
-  $ yalive-server dev -c='{"root": "dist", "port": 5501, "cors": true, "https": true, "historyApiFallback": true, "proxy": [{"prefix": "/api", "target": "https://backend", "changeOrigin": true}]}'
+  $ yalive-server dev -c '{"root": "dist", "port": 5501, "cors": true, "https": true, "historyApiFallback": true, "proxy": [{"prefix": "/api", "target": "https://backend", "changeOrigin": true}], "server": {"debug": true, "color": true} }'
 ```
 
 Usage from node
@@ -51,7 +51,17 @@ const conf = {
   cors: true,
   https: true,
   historyApiFallback: true,
-  proxy: [],
+  proxy: [
+    {
+      prefix: '/api',
+      target: 'https://backend',
+      changeOrigin: true,
+    },
+  ],
+  server: {
+    debug: true,
+    color: true,
+  },
 }
 
 yaliveServer.dev(conf)
