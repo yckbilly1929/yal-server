@@ -1,6 +1,6 @@
 module github.com/yckbilly1929/yalive-server
 
-go 1.17
+go 1.18
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1

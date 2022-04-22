@@ -35,11 +35,11 @@ var (
 	mu         sync.RWMutex
 	activeConn = map[net.Conn]struct{}{}
 
-	wsPort                   int
-	wsConnectedPayload       = []byte("connected")
-	wsReloadPayload          = []byte("reload")
-	wsRefreshCssPayload      = []byte("refresh-css")
-	wsRefreshCssPopupPayload = []byte("refresh-css-popup")
+	wsPort              int
+	wsConnectedPayload  = []byte("connected")
+	wsReloadPayload     = []byte("reload")
+	wsRefreshCssPayload = []byte("refresh-css")
+	// wsRefreshCssPopupPayload = []byte("refresh-css-popup")
 
 	defaultRootDir  = "dist"
 	defaultRootFile = "index.html"
@@ -323,10 +323,7 @@ func startApp(sc *ServeConfig, httpServer *http.Server, wsServer *http.Server, w
 		// errors out, in which case we want to close the other and return.
 		<-ctx.Done()
 
-		// TODO: not available on windows server
-		if err := syscall.Kill(syscall.Getpid(), syscall.SIGINT); err != nil {
-			slog.Errorw("failed to trigger syscall kill", "err", err)
-		}
+		SendKillSignal(slog)
 	}()
 
 	err := g.Wait()

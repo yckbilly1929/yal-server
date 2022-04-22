@@ -1,0 +1,44 @@
+{
+  "name": "yalive-server",
+  "version": "0.2.0",
+  "description": "Yet Another Live Server.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yckbilly1929/yalive-server.git"
+  },
+  "author": "Billy Yip (https://github.com/yckbilly1929)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yckbilly1929/yalive-server/issues"
+  },
+  "homepage": "https://github.com/yckbilly1929/yalive-server#readme",
+  "keywords": [
+    "live-server",
+    "live",
+    "server",
+    "reload",
+    "development",
+    "tool",
+    "cli",
+    "esbuild"
+  ],
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "main": "lib/main.js",
+  "types": "lib/main.d.ts",
+  "engines": {
+    "node": ">=16"
+  },
+  "bin": {
+    "yalive-server": "bin/yalive-server"
+  },
+  "optionalDependencies": {
+    "yalive-server-darwin-64": "0.2.0",
+    "yalive-server-darwin-arm64": "0.2.0",
+    "yalive-server-linux-64": "0.2.0",
+    "yalive-server-linux-arm64": "0.2.0",
+    "yalive-server-windows-64": "0.2.0",
+    "yalive-server-windows-arm64": "0.2.0"
+  }
+}

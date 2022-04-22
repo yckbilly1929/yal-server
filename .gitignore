@@ -39,4 +39,6 @@ pnpm-debug.log*
 
 # custom
 **/build
-yalive-server*
+bin
+/npm/yalive-server/install.js
+/npm/yalive-server/lib/

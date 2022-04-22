@@ -11,25 +11,25 @@ export var YALIVE_BINARY_PATH: string | undefined = process.env.YALIVE_BINARY_PA
 export const knownWindowsPackages: Record<string, string> = {
   // 'win32 arm64 LE': 'yalive-server-windows-arm64',
   // 'win32 ia32 LE': 'yalive-server-windows-32',
-  // 'win32 x64 LE': 'yalive-server-windows-64',
+  'win32 x64 LE': 'yalive-server-windows-64',
 }
 
 export const knownUnixlikePackages: Record<string, string> = {
-  'android arm64 LE': 'yalive-server-android-arm64',
+  // 'android arm64 LE': 'yalive-server-android-arm64',
   'darwin arm64 LE': 'yalive-server-darwin-arm64',
   'darwin x64 LE': 'yalive-server-darwin-64',
-  'freebsd arm64 LE': 'yalive-server-freebsd-arm64',
-  'freebsd x64 LE': 'yalive-server-freebsd-64',
-  'linux arm LE': 'yalive-server-linux-arm',
+  // 'freebsd arm64 LE': 'yalive-server-freebsd-arm64',
+  // 'freebsd x64 LE': 'yalive-server-freebsd-64',
+  // 'linux arm LE': 'yalive-server-linux-arm',
   'linux arm64 LE': 'yalive-server-linux-arm64',
-  'linux ia32 LE': 'yalive-server-linux-32',
-  'linux mips64el LE': 'yalive-server-linux-mips64le',
-  'linux ppc64 LE': 'yalive-server-linux-ppc64le',
-  'linux s390x BE': 'yalive-server-linux-s390x',
+  // 'linux ia32 LE': 'yalive-server-linux-32',
+  // 'linux mips64el LE': 'yalive-server-linux-mips64le',
+  // 'linux ppc64 LE': 'yalive-server-linux-ppc64le',
+  // 'linux s390x BE': 'yalive-server-linux-s390x',
   'linux x64 LE': 'yalive-server-linux-64',
-  'netbsd x64 LE': 'yalive-server-netbsd-64',
-  'openbsd x64 LE': 'yalive-server-openbsd-64',
-  'sunos x64 LE': 'yalive-server-sunos-64',
+  // 'netbsd x64 LE': 'yalive-server-netbsd-64',
+  // 'openbsd x64 LE': 'yalive-server-openbsd-64',
+  // 'sunos x64 LE': 'yalive-server-sunos-64',
 }
 
 export function pkgAndSubpathForCurrentPlatform(): { pkg: string; subpath: string } {
@@ -39,10 +39,9 @@ export function pkgAndSubpathForCurrentPlatform(): { pkg: string; subpath: strin
 
   if (platformKey in knownWindowsPackages) {
     pkg = knownWindowsPackages[platformKey]
-    subpath = 'yalive-server.exe'
+    subpath = 'bin/yalive-server.exe'
   } else if (platformKey in knownUnixlikePackages) {
-    // pkg = knownUnixlikePackages[platformKey];
-    pkg = 'yalive-server'
+    pkg = knownUnixlikePackages[platformKey]
     subpath = 'bin/yalive-server'
   } else {
     throw new Error(`Unsupported platform: ${platformKey}`)

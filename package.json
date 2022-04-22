@@ -1,28 +1,21 @@
 {
-  "name": "yalive-server",
-  "version": "0.1.1",
+  "name": "yalive-server-dev",
+  "version": "0.2.0",
   "description": "Yet Another Live Server.",
-  "main": "lib/main.js",
-  "types": "lib/main.d.ts",
-  "bin": {
-    "yalive-server": "bin/yalive-server"
-  },
   "engines": {
     "node": ">=16"
   },
-  "files": [
-    "lib/**",
-    "bin/**"
-  ],
   "browser": {
     "path": "path-browserify"
   },
   "scripts": {
     "build:go": "esbuild src/go/client.ts --bundle --minify --banner:js=//auto-generated --outfile=app/server/build/out.js",
-    "build:js": "esbuild src/main.ts --bundle --minify --platform=node --define:WASM=false --outfile=lib/main.js",
-    "build:types": "mkdir -p lib && cp src/shared/types.ts lib/main.d.ts"
+    "build:js": "esbuild src/main.ts --bundle --minify --platform=node --define:WASM=false --outfile=npm/yalive-server/lib/main.js",
+    "build:install": "esbuild src/npm/node-install.ts --bundle --minify --platform=node --define:WASM=false --outfile=npm/yalive-server/install.js",
+    "build:types": "mkdir -p npm/yalive-server/lib && cp src/shared/types.ts npm/yalive-server/lib/main.d.ts"
   },
   "devDependencies": {
+    "@snackbar/core": "^1.7.0",
     "@types/node": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
@@ -35,28 +28,5 @@
     "path-browserify": "^1.0.1",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4"
-  },
-  "dependencies": {
-    "@snackbar/core": "^1.7.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yckbilly1929/yalive-server.git"
-  },
-  "author": "Billy Yip (https://github.com/yckbilly1929)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yckbilly1929/yalive-server/issues"
-  },
-  "homepage": "https://github.com/yckbilly1929/yalive-server#readme",
-  "keywords": [
-    "live-server",
-    "live",
-    "server",
-    "reload",
-    "development",
-    "tool",
-    "cli",
-    "esbuild"
-  ]
+  }
 }

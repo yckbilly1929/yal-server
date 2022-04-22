@@ -1,0 +1,21 @@
+{
+  "name": "yalive-server-windows-arm64",
+  "version": "0.2.0",
+  "description": "Yet Another Live Server.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yckbilly1929/yalive-server.git"
+  },
+  "author": "Billy Yip (https://github.com/yckbilly1929)",
+  "license": "MIT",
+  "preferUnplugged": false,
+  "engines": {
+    "node": ">=16"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "arm64"
+  ]
+}
