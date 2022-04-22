@@ -11,6 +11,7 @@ import https = require('https')
 import child_process = require('child_process')
 
 declare const YALIVE_VERSION: string
+const toFolder = path.join(__dirname, 'bin')
 const toPath = path.join(__dirname, 'bin', 'yalive-server')
 let isToPathJS = true
 
@@ -185,6 +186,11 @@ function maybeOptimizePackage(binPath: string): void {
       // error, then we'll just end up doing nothing. This uses a hard link to
       // avoid taking up additional space on the file system.
       fs.linkSync(binPath, tempPath)
+
+      // TODO: investigate why not working the same way as esbuild
+      if (!fs.existsSync(toFolder)) {
+        fs.mkdirSync(toFolder)
+      }
 
       // Then use rename to atomically replace the target file with the temporary
       // file. If this fails and throws an error, then we'll just end up leaving

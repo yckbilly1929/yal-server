@@ -1,6 +1,6 @@
 {
   "name": "yalive-server",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Yet Another Live Server.",
   "repository": {
     "type": "git",
@@ -34,11 +34,11 @@
     "yalive-server": "bin/yalive-server"
   },
   "optionalDependencies": {
-    "yalive-server-darwin-64": "0.2.3",
-    "yalive-server-darwin-arm64": "0.2.3",
-    "yalive-server-linux-64": "0.2.3",
-    "yalive-server-linux-arm64": "0.2.3",
-    "yalive-server-windows-64": "0.2.3",
-    "yalive-server-windows-arm64": "0.2.3"
+    "yalive-server-darwin-64": "0.2.4",
+    "yalive-server-darwin-arm64": "0.2.4",
+    "yalive-server-linux-64": "0.2.4",
+    "yalive-server-linux-arm64": "0.2.4",
+    "yalive-server-windows-64": "0.2.4",
+    "yalive-server-windows-arm64": "0.2.4"
   }
 }
