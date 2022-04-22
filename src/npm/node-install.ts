@@ -15,7 +15,7 @@ const toPath = path.join(__dirname, 'bin', 'yalive-server')
 let isToPathJS = true
 
 function validateBinaryVersion(...command: string[]): void {
-  command.push('--version')
+  command.push('version')
   const stdout = child_process
     .execFileSync(command.shift()!, command, {
       // Without this, this install script strangely crashes with the error
@@ -82,6 +82,21 @@ function extractFileFromTarGzip(buffer: Buffer, subpath: string): Buffer {
   throw new Error(`Could not find ${JSON.stringify(subpath)} in archive`)
 }
 
+function removeRecursive(dir: string): void {
+  for (const entry of fs.readdirSync(dir)) {
+    const entryPath = path.join(dir, entry)
+    let stats
+    try {
+      stats = fs.lstatSync(entryPath)
+    } catch {
+      continue // Guard against https://github.com/nodejs/node/issues/4760
+    }
+    if (stats.isDirectory()) removeRecursive(entryPath)
+    else fs.unlinkSync(entryPath)
+  }
+  fs.rmdirSync(dir)
+}
+
 function installUsingNPM(pkg: string, subpath: string, binPath: string): void {
   // Erase "npm_config_global" so that "npm install --global yalive-server" works.
   // Otherwise this nested "npm install" will also be global, and the install
@@ -127,21 +142,6 @@ function installUsingNPM(pkg: string, subpath: string, binPath: string): void {
       // can do in this case so we just leave the directory there.
     }
   }
-}
-
-function removeRecursive(dir: string): void {
-  for (const entry of fs.readdirSync(dir)) {
-    const entryPath = path.join(dir, entry)
-    let stats
-    try {
-      stats = fs.lstatSync(entryPath)
-    } catch {
-      continue // Guard against https://github.com/nodejs/node/issues/4760
-    }
-    if (stats.isDirectory()) removeRecursive(entryPath)
-    else fs.unlinkSync(entryPath)
-  }
-  fs.rmdirSync(dir)
 }
 
 function applyManualBinaryPathOverride(overridePath: string): void {
