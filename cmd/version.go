@@ -1,3 +1,3 @@
 package cmd
 
-const yaliveVersion = "0.2.2"
+const yaliveVersion = "0.2.3"
