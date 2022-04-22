@@ -55,7 +55,7 @@ platform-neutral:
 	node scripts/build.js --neutral
 
 publish-all: check-go-version
-	@npm --version > /dev/null || (echo "The 'npm' command must be in your path to publish" && false)
+	@pnpm --version > /dev/null || (echo "The 'pnpm' command must be in your path to publish" && false)
 	@echo "Checking for uncommitted/untracked changes..." && test -z "`git status --porcelain | grep -vE 'M (CHANGELOG\.md|version\.txt)'`" || \
 		(echo "Refusing to publish with these uncommitted/untracked changes:" && \
 		git status --porcelain | grep -vE 'M (CHANGELOG\.md|version\.txt)' && false)
@@ -99,22 +99,22 @@ publish-all: check-go-version
 	git push origin main "v$(YALIVE_VERSION)"
 
 publish-windows: platform-windows
-	test -n "$(OTP)" && cd npm/yalive-server-windows-64 && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server-windows-64 && pnpm publish --otp="$(OTP)"
 
 publish-windows-arm64: platform-windows-arm64
-	test -n "$(OTP)" && cd npm/yalive-server-windows-arm64 && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server-windows-arm64 && pnpm publish --otp="$(OTP)"
 
 publish-darwin: platform-darwin
-	test -n "$(OTP)" && cd npm/yalive-server-darwin-64 && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server-darwin-64 && pnpm publish --otp="$(OTP)"
 
 publish-darwin-arm64: platform-darwin-arm64
-	test -n "$(OTP)" && cd npm/yalive-server-darwin-arm64 && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server-darwin-arm64 && pnpm publish --otp="$(OTP)"
 
 publish-linux: platform-linux
-	test -n "$(OTP)" && cd npm/yalive-server-linux-64 && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server-linux-64 && pnpm publish --otp="$(OTP)"
 
 publish-linux-arm64: platform-linux-arm64
-	test -n "$(OTP)" && cd npm/yalive-server-linux-arm64 && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server-linux-arm64 && pnpm publish --otp="$(OTP)"
 
 publish-neutral: platform-neutral
-	test -n "$(OTP)" && cd npm/yalive-server && npm publish --otp="$(OTP)"
+	test -n "$(OTP)" && cd npm/yalive-server && pnpm publish --otp="$(OTP)"
