@@ -6,6 +6,7 @@ const fs = require('fs')
 const repoDir = path.dirname(__dirname)
 const npmDir = path.join(repoDir, 'npm', 'yalive-server')
 const version = fs.readFileSync(path.join(repoDir, 'version.txt'), 'utf8').trim()
+const nodeTarget = 'node16' // See: https://nodejs.org/en/about/releases/
 
 const buildNeutralLib = () => {
   const libDir = path.join(npmDir, 'lib')
@@ -20,7 +21,7 @@ const buildNeutralLib = () => {
       path.join(repoDir, 'src', 'npm', 'node-install.ts'),
       '--outfile=' + path.join(npmDir, 'install.js'),
       '--bundle',
-      '--define:YALIVE_VERSION=' + JSON.stringify(version),
+      '--define:YALIVE_VERSION=' + `\\"${version}\\"`,
       '--external:yalive-server',
       '--platform=node',
       '--log-level=warning',
@@ -35,7 +36,7 @@ const buildNeutralLib = () => {
       '--outfile=' + path.join(libDir, 'main.js'),
       '--bundle',
       '--define:WASM=false',
-      '--define:YALIVE_VERSION=' + JSON.stringify(version),
+      '--define:YALIVE_VERSION=' + `\\"${version}\\"`,
       '--external:yalive-server',
       '--platform=node',
       '--log-level=warning',

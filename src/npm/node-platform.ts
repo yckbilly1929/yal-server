@@ -9,7 +9,7 @@ import path = require('path')
 export var YALIVE_BINARY_PATH: string | undefined = process.env.YALIVE_BINARY_PATH || YALIVE_BINARY_PATH
 
 export const knownWindowsPackages: Record<string, string> = {
-  // 'win32 arm64 LE': 'yalive-server-windows-arm64',
+  'win32 arm64 LE': 'yalive-server-windows-arm64',
   // 'win32 ia32 LE': 'yalive-server-windows-32',
   'win32 x64 LE': 'yalive-server-windows-64',
 }

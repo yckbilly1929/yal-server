@@ -21,7 +21,8 @@ platform-all:
 		platform-linux \
 		platform-linux-arm64 \
 		platform-windows \
-		platform-windows-arm64
+		platform-windows-arm64 \
+		platform-neutral
 
 platform-windows: version-go
 	node scripts/build.js npm/yalive-server-windows-64/package.json --version
