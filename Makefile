@@ -54,7 +54,8 @@ platform-neutral:
 	node scripts/build.js npm/yalive-server/package.json --version
 	node scripts/build.js --neutral
 
-publish-all: check-go-version
+# slightly modified
+prepare-publish: check-go-version
 	@pnpm --version > /dev/null || (echo "The 'pnpm' command must be in your path to publish" && false)
 	@echo "Checking for uncommitted/untracked changes..." && test -z "`git status --porcelain | grep -vE 'M (CHANGELOG\.md|version\.txt)'`" || \
 		(echo "Refusing to publish with these uncommitted/untracked changes:" && \
@@ -76,6 +77,7 @@ publish-all: check-go-version
 	# Make sure the npm directory is pristine (including .gitignored files) since it will be published
 	# rm -fr npm && git checkout npm
 
+publish-all: check-go-version
 	@echo Enter one-time password:
 	@read OTP && OTP="$$OTP" $(MAKE) --no-print-directory -j4 \
 		publish-windows \
