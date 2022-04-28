@@ -43,6 +43,20 @@ const buildNeutralLib = () => {
     ].join(' ')
   )
 
+  // Generate "npm/yalive-server/bin/yalive-server"
+  childProcess.execSync(
+    [
+      'pnpm exec esbuild',
+      path.join(repoDir, 'src', 'npm', 'node-shim.ts'),
+      '--outfile=' + path.join(binDir, 'yalive-server'),
+      '--bundle',
+      '--target=' + nodeTarget,
+      '--external:yalive-server',
+      '--platform=node',
+      '--log-level=warning',
+    ].join(' ')
+  )
+
   // Generate "npm/yalive-server/lib/main.d.ts"
   const types_ts = fs.readFileSync(path.join(repoDir, 'src', 'shared', 'types.ts'), 'utf8')
   fs.writeFileSync(path.join(libDir, 'main.d.ts'), types_ts)
