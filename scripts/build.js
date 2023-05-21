@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const childProcess = require('child_process')
 const path = require('path')
 const fs = require('fs')
@@ -19,13 +18,13 @@ const buildNeutralLib = () => {
     [
       'pnpm exec esbuild',
       path.join(repoDir, 'src', 'npm', 'node-install.ts'),
-      '--outfile=' + path.join(npmDir, 'install.js'),
+      `--outfile=${path.join(npmDir, 'install.js')}`,
       '--bundle',
-      '--define:YALIVE_VERSION=' + `\\"${version}\\"`,
+      `--define:YALIVE_VERSION=\\"${version}\\"`,
       '--external:yalive-server',
       '--platform=node',
       '--log-level=warning',
-    ].join(' ')
+    ].join(' '),
   )
 
   // Generate "npm/yalive-server/lib/main.js"
@@ -33,14 +32,14 @@ const buildNeutralLib = () => {
     [
       'pnpm exec esbuild',
       path.join(repoDir, 'src', 'main.ts'),
-      '--outfile=' + path.join(libDir, 'main.js'),
+      `--outfile=${path.join(libDir, 'main.js')}`,
       '--bundle',
       '--define:WASM=false',
-      '--define:YALIVE_VERSION=' + `\\"${version}\\"`,
+      `--define:YALIVE_VERSION=\\"${version}\\"`,
       '--external:yalive-server',
       '--platform=node',
       '--log-level=warning',
-    ].join(' ')
+    ].join(' '),
   )
 
   // Generate "npm/yalive-server/bin/yalive-server"
@@ -48,13 +47,13 @@ const buildNeutralLib = () => {
     [
       'pnpm exec esbuild',
       path.join(repoDir, 'src', 'npm', 'node-shim.ts'),
-      '--outfile=' + path.join(binDir, 'yalive-server'),
+      `--outfile=${path.join(binDir, 'yalive-server')}`,
       '--bundle',
-      '--target=' + nodeTarget,
+      `--target=${nodeTarget}`,
       '--external:yalive-server',
       '--platform=node',
       '--log-level=warning',
-    ].join(' ')
+    ].join(' '),
   )
 
   // Generate "npm/yalive-server/lib/main.d.ts"
@@ -72,12 +71,12 @@ const buildNeutralLib = () => {
         'pnpm exec esbuild',
         path.join(repoDir, 'src', 'npm', 'node-platform.ts'),
         '--bundle',
-        '--target=' + nodeTarget,
+        `--target=${nodeTarget}`,
         '--external:yalive-server',
         '--platform=node',
         '--log-level=warning',
-      ].join(' ')
-    )
+      ].join(' '),
+    ),
   )(platforms, platforms.exports, require)
   const optionalDependencies = Object.fromEntries(
     Object.values({
@@ -86,7 +85,7 @@ const buildNeutralLib = () => {
       ...platforms.exports.knownWebAssemblyFallbackPackages,
     })
       .sort()
-      .map((x) => [x, version])
+      .map((x) => [x, version]),
   )
 
   // Update "npm/yalive-server/package.json"
@@ -104,7 +103,7 @@ const buildNeutralLib = () => {
 exports.removeRecursiveSync = (p) => {
   try {
     fs.rmSync(p, { recursive: true })
-  } catch (e) {
+  } catch (_e) {
     // Removing stuff on Windows is flaky and unreliable. Don't fail tests
     // on CI if Windows is just being a pain. Common causes of flakes include
     // random EPERM and ENOTEMPTY errors.

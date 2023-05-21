@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "description": "Yet Another Live Server.",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "browser": {
     "path": "path-browserify"
@@ -12,21 +12,16 @@
     "build:go": "esbuild src/go/client.ts --bundle --minify --banner:js=//auto-generated --outfile=app/server/build/out.js",
     "build:js": "esbuild src/main.ts --bundle --minify --platform=node --define:WASM=false --outfile=npm/yalive-server/lib/main.js",
     "build:install": "esbuild src/npm/node-install.ts --bundle --minify --platform=node --define:WASM=false --outfile=npm/yalive-server/install.js",
-    "build:types": "mkdir -p npm/yalive-server/lib && cp src/shared/types.ts npm/yalive-server/lib/main.d.ts"
+    "build:types": "mkdir -p npm/yalive-server/lib && cp src/shared/types.ts npm/yalive-server/lib/main.d.ts",
+    "lint": "rome check . --apply-unsafe --max-diagnostics=200",
+    "format": "rome format . --write --max-diagnostics=200 --quote-style='single' --semicolons='as-needed'"
   },
   "devDependencies": {
     "@snackbar/core": "^1.7.0",
-    "@types/node": "^17.0.8",
-    "@typescript-eslint/eslint-plugin": "^5.9.0",
-    "@typescript-eslint/parser": "^5.9.0",
-    "esbuild": "^0.14.10",
-    "eslint": "^8.6.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-typescript": "^2.5.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-prettier": "^4.0.0",
+    "@types/node": "^20.2.1",
+    "esbuild": "^0.17.19",
     "path-browserify": "^1.0.1",
-    "prettier": "^2.5.1",
-    "typescript": "^4.5.4"
+    "rome": "^12.1.2",
+    "typescript": "^5.0.4"
   }
 }

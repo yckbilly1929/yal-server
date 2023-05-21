@@ -6,7 +6,7 @@ import path = require('path')
 // path without modifying the code itself. Do not remove this because
 // external code relies on this.
 // eslint-disable-next-line no-var
-export var YALIVE_BINARY_PATH: string | undefined = process.env.YALIVE_BINARY_PATH || YALIVE_BINARY_PATH
+export const YALIVE_BINARY_PATH: string | undefined = process.env.YALIVE_BINARY_PATH || YALIVE_BINARY_PATH
 
 export const knownWindowsPackages: Record<string, string> = {
   'win32 arm64 LE': 'yalive-server-windows-arm64',
@@ -103,7 +103,7 @@ by yalive-server to install the correct binary executable for your current platf
   try {
     require('pnpapi')
     isYarnPnP = true
-  } catch (e) {}
+  } catch (_e) {}
   if (isYarnPnP) {
     const libDir = path.dirname(require.resolve('yalive-server'))
     const binTargetPath = path.join(libDir, `pnpapi-${pkg}-${path.basename(subpath)}`)

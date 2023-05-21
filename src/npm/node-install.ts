@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { downloadedBinPath, YALIVE_BINARY_PATH, pkgAndSubpathForCurrentPlatform } from './node-platform'
+import { YALIVE_BINARY_PATH, downloadedBinPath, pkgAndSubpathForCurrentPlatform } from './node-platform'
 
 import fs = require('fs')
 import os = require('os')
@@ -18,6 +15,7 @@ let isToPathJS = true
 function validateBinaryVersion(...command: string[]): void {
   command.push('version')
   const stdout = child_process
+    // rome-ignore lint/style/noNonNullAssertion: <explanation>
     .execFileSync(command.shift()!, command, {
       // Without this, this install script strangely crashes with the error
       // "EACCES: permission denied, write" but only on Ubuntu Linux when node is
@@ -65,8 +63,9 @@ function fetch(url: string): Promise<Buffer> {
 function extractFileFromTarGzip(buffer: Buffer, subpath: string): Buffer {
   try {
     buffer = zlib.unzipSync(buffer)
+    // rome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (err: any) {
-    throw new Error(`Invalid gzip data in archive: ${(err && err.message) || err}`)
+    throw new Error(`Invalid gzip data in archive: ${err?.message || err}`)
   }
   const str = (i: number, n: number) => String.fromCharCode(...buffer.subarray(i, i + n)).replace(/\0.*$/, '')
   let offset = 0
@@ -119,7 +118,7 @@ function installUsingNPM(pkg: string, subpath: string, binPath: string): void {
     // for example, a custom configured npm registry and special firewall rules.
     child_process.execSync(
       `npm install --loglevel=error --prefer-offline --no-audit --progress=false ${pkg}@${YALIVE_VERSION}`,
-      { cwd: installDir, stdio: 'pipe', env }
+      { cwd: installDir, stdio: 'pipe', env },
     )
 
     // Move the downloaded binary executable into place. The destination path
@@ -150,8 +149,7 @@ function applyManualBinaryPathOverride(overridePath: string): void {
   const pathString = JSON.stringify(overridePath)
   fs.writeFileSync(
     toPath,
-    '#!/usr/bin/env node\n' +
-      `require('child_process').execFileSync(${pathString}, process.argv.slice(2), { stdio: 'inherit' });\n`
+    `#!/usr/bin/env node\nrequire('child_process').execFileSync(${pathString}, process.argv.slice(2), { stdio: 'inherit' });\n`,
   )
 
   // Patch the JS API use case (the "require('yalive-server')" workflow)
@@ -220,8 +218,9 @@ async function downloadDirectlyFromNPM(pkg: string, subpath: string, binPath: st
   try {
     fs.writeFileSync(binPath, extractFileFromTarGzip(await fetch(url), subpath))
     fs.chmodSync(binPath, 0o755)
+    // rome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (e: any) {
-    console.error(`[yalive-server] Failed to download ${JSON.stringify(url)}: ${(e && e.message) || e}`)
+    console.error(`[yalive-server] Failed to download ${JSON.stringify(url)}: ${e?.message || e}`)
     throw e
   }
 }
@@ -242,7 +241,7 @@ async function checkAndPreparePackage(): Promise<void> {
     // First check for the binary package from our "optionalDependencies". This
     // package should have been installed alongside this package at install time.
     binPath = require.resolve(`${pkg}/${subpath}`)
-  } catch (e) {
+  } catch (_e) {
     console.error(`[yalive-server] Failed to find package "${pkg}" on the file system
 
 This can happen if you use the "--no-optional" flag. The "optionalDependencies"
@@ -264,15 +263,16 @@ this. If that fails, you need to remove the "--no-optional" flag to use yalive-s
     try {
       console.error(`[yalive-server] Trying to install package "${pkg}" using npm`)
       installUsingNPM(pkg, subpath, binPath)
+      // rome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (e2: any) {
-      console.error(`[yalive-server] Failed to install package "${pkg}" using npm: ${(e2 && e2.message) || e2}`)
+      console.error(`[yalive-server] Failed to install package "${pkg}" using npm: ${e2?.message || e2}`)
 
       // If that didn't also work, then something is likely wrong with the "npm"
       // command. Attempt to compensate for this by manually downloading the
       // package from the npm registry over HTTP as a last resort.
       try {
         await downloadDirectlyFromNPM(pkg, subpath, binPath)
-      } catch (e3: any) {
+      } catch (_e3) {
         throw new Error(`Failed to install package "${pkg}"`)
       }
     }
