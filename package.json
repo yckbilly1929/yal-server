@@ -1,6 +1,6 @@
 {
   "name": "yalive-server-dev",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Yet Another Live Server.",
   "engines": {
     "node": ">=18"

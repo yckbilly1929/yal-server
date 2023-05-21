@@ -9,7 +9,7 @@ local-build:
 	CGO_ENABLED=0 go build -ldflags "-s -w" -o bin/$(BINARY) .
 
 check-go-version:
-	@go version | grep ' go1\.18\.1 ' || (echo 'Please install Go version 1.18.1' && false)
+	@go version | grep ' go1\.20' || (echo 'Please install Go version 1.20' && false)
 
 version-go:
 	node scripts/build.js --update-version-go
