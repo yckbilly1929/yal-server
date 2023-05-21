@@ -23,7 +23,12 @@ type ServeConfig struct {
 	Host   string `json:"host"`
 	IsYarn bool   `json:"isYarn"`
 
-	Internal internalConfig `json:"-"`
+	// internal
+	Internal          internalConfig `json:"-"`
+	LocalAddress      string         `json:"-"`
+	NetworkAddress    string         `json:"-"`
+	HttpProtocol      string         `json:"-"`
+	WebsocketProtocol string         `json:"-"`
 }
 
 type Server struct {

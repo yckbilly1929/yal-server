@@ -6,8 +6,12 @@ console.log('[yalive-server] init')
 if ('WebSocket' in window) {
   window.addEventListener('load', () => {
     const protocol = window.location.protocol === 'http:' ? 'ws:' : 'wss:'
-    const host = 'localhost:{{port}}'
-    const address = `${protocol}//${host}`
+
+    const localAddr = '{{localAddr}}'
+    const networkAddr = '{{networkAddr}}'
+    const targetHost = window.location.hostname === networkAddr ? networkAddr : localAddr
+
+    const uri = `${protocol}//${targetHost}:{{port}}`
 
     const CONNECTING_MSG = '[yalive-server] connecting...'
     const CONNECTED_MSG = '[yalive-server] connected.'
@@ -48,7 +52,7 @@ if ('WebSocket' in window) {
 
     const connect = () => {
       console.log(CONNECTING_MSG)
-      socket = new WebSocket(address)
+      socket = new WebSocket(uri)
 
       socket.onmessage = function (msg) {
         // reset health check

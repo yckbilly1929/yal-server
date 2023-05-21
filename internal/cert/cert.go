@@ -9,6 +9,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math/big"
@@ -46,7 +47,10 @@ type CertOpt struct {
 func Generate(opt CertOpt) error {
 	if opt.Host == "" {
 		// use for SANs
-		opt.Host = "localhost,localhost.localdomain,lvh.me,*.lvh.me,[::1],127.0.0.1,fe80::1"
+		opt.Host = "localhost,localhost.localdomain,lvh.me,*.lvh.me,[::1],127.0.0.1,fe80::1,0.0.0.0"
+	} else {
+		// use for SANs
+		opt.Host = fmt.Sprintf("localhost,localhost.localdomain,lvh.me,*.lvh.me,[::1],127.0.0.1,fe80::1,0.0.0.0,%s", opt.Host)
 	}
 	if opt.ValidFor == 0 {
 		opt.ValidFor = 30 * 24 * time.Hour
@@ -112,7 +116,7 @@ func Generate(opt CertOpt) error {
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			CommonName: "localhost",
+			CommonName: opt.Host, // good default?
 		},
 		NotBefore: notBefore,
 		NotAfter:  notAfter,

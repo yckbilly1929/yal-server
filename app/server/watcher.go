@@ -14,7 +14,7 @@ import (
 	"github.com/yckbilly1929/yalive-server/internal/logger"
 )
 
-func serveFileContents(filePath string, dir http.Dir) http.HandlerFunc {
+func serveFileContents(sc ServeConfig, filePath string, dir http.Dir) http.HandlerFunc {
 	slog := logger.S()
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -59,11 +59,13 @@ func serveFileContents(filePath string, dir http.Dir) http.HandlerFunc {
 		port := strconv.FormatInt(int64(wsPort), 10)
 		rawStyle := "<style>" + injectedStyle + "</style>"
 		rawScript := "<script>" + injectedCode + "</script>"
+		rawScript = strings.Replace(rawScript, replaceLocalAddress, sc.LocalAddress, 1)
+		rawScript = strings.Replace(rawScript, replaceNetworkAddress, sc.NetworkAddress, 1)
 		rawScript = strings.Replace(rawScript, replacePort, port, 1)
 		neededContent := append([]byte(rawStyle), []byte(rawScript)...)
-		if bytes.Index(buf.Bytes(), headEnd) != -1 {
+		if bytes.Contains(buf.Bytes(), headEnd) {
 			res = bytes.Replace(buf.Bytes(), headEnd, append(neededContent, headEnd...), 1)
-		} else if bytes.Index(buf.Bytes(), bodyEnd) != -1 {
+		} else if bytes.Contains(buf.Bytes(), bodyEnd) {
 			res = bytes.Replace(buf.Bytes(), bodyEnd, append(neededContent, bodyEnd...), 1)
 		}
 

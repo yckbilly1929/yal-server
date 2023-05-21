@@ -8,6 +8,8 @@ export interface DevOptions {
 
   proxy?: ProxyMiddleware[]
   server?: Server
+
+  host?: string
 }
 
 export interface ProxyMiddleware {

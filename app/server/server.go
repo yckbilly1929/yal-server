@@ -47,9 +47,11 @@ var (
 	defaultKeyFile  = "server.key"
 	nodePkgFile     = "package.json"
 
-	headEnd     = []byte("</head>")
-	bodyEnd     = []byte("</body>")
-	replacePort = "{{port}}"
+	headEnd               = []byte("</head>")
+	bodyEnd               = []byte("</body>")
+	replaceLocalAddress   = "{{localAddr}}"
+	replaceNetworkAddress = "{{networkAddr}}"
+	replacePort           = "{{port}}"
 	//go:embed build/out.js
 	injectedCode string
 	//go:embed build/out.css
@@ -60,6 +62,23 @@ var (
 
 func Run(sc ServeConfig) {
 	// TODO: validate config
+	if sc.Host == "" {
+		sc.LocalAddress = "localhost"
+	} else if sc.Host == "0.0.0.0" {
+		sc.LocalAddress = sc.Host
+
+		ifaces, _ := net.Interfaces()
+	OuterLoop:
+		for _, iface := range ifaces {
+			if !strings.Contains(iface.Flags.String(), "loopback") {
+				addrs, _ := iface.Addrs()
+				for _, addr := range addrs {
+					sc.NetworkAddress = strings.Split(addr.String(), "/")[0]
+					break OuterLoop
+				}
+			}
+		}
+	}
 	if sc.Port == 0 {
 		sc.Port = 5501
 	}
@@ -91,6 +110,7 @@ func Run(sc ServeConfig) {
 		}
 
 		opt := cert.CertOpt{
+			Host:     sc.Host,
 			CertPath: sc.Internal.CertPath,
 			KeyPath:  sc.Internal.KeyPath,
 		}
@@ -100,6 +120,12 @@ func Run(sc ServeConfig) {
 				panic(err)
 			}
 		}
+
+		sc.HttpProtocol = "https"
+		sc.WebsocketProtocol = "wss"
+	} else {
+		sc.HttpProtocol = "http"
+		sc.WebsocketProtocol = "ws"
 	}
 
 	// init
@@ -141,7 +167,7 @@ func Run(sc ServeConfig) {
 	rootDir := http.Dir(sc.Root)
 	fs := http.FileServer(rootDir)
 
-	rootHandler := serveFileContents(defaultRootFile, rootDir)
+	rootHandler := serveFileContents(sc, defaultRootFile, rootDir)
 
 	if sc.HistoryApiFallback {
 		r.Get("/", rootHandler)
@@ -152,14 +178,14 @@ func Run(sc ServeConfig) {
 	}
 
 	h := &http.Server{
-		Addr:     fmt.Sprintf(":%d", sc.Port),
+		Addr:     fmt.Sprintf("%s:%d", sc.Host, sc.Port),
 		Handler:  r,
 		ErrorLog: compatLog,
 	}
 
 	// 2. wss
 	wsServer := &http.Server{
-		Addr: ":0", // random assign port later
+		Addr: fmt.Sprintf("%s:0", sc.Host), // random assign port later
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			conn, _, _, err := ws.UpgradeHTTP(r, w)
 			if err != nil {
@@ -237,6 +263,11 @@ func startApp(sc *ServeConfig, httpServer *http.Server, wsServer *http.Server, w
 
 	g.Go(func() error {
 		slog.Info("http server will start")
+		slog.Infof(fmt.Sprintf("http Local: %s://%s:%d", sc.HttpProtocol, sc.LocalAddress, sc.Port))
+		if sc.NetworkAddress != "" {
+			slog.Infof(fmt.Sprintf("http Network: %s://%s:%d", sc.HttpProtocol, sc.NetworkAddress, sc.Port))
+		}
+
 		var err error
 		if sc.HTTPS {
 			err = httpServer.ListenAndServeTLS(sc.Internal.CertPath, sc.Internal.KeyPath)
@@ -253,11 +284,17 @@ func startApp(sc *ServeConfig, httpServer *http.Server, wsServer *http.Server, w
 
 	g.Go(func() error {
 		slog.Info("ws server will start")
-		listener, err := net.Listen("tcp", ":0")
+		listener, err := net.Listen("tcp", fmt.Sprintf("%s:0", sc.Host))
 		if err != nil {
 			return err
 		}
 		wsPort = listener.Addr().(*net.TCPAddr).Port
+
+		slog.Infof(fmt.Sprintf("ws Local: %s://%s:%d", sc.WebsocketProtocol, sc.LocalAddress, wsPort))
+		if sc.NetworkAddress != "" {
+			slog.Infof(fmt.Sprintf("ws Network: %s://%s:%d", sc.WebsocketProtocol, sc.NetworkAddress, wsPort))
+		}
+
 		if sc.HTTPS {
 			err = wsServer.ServeTLS(listener, sc.Internal.CertPath, sc.Internal.KeyPath)
 		} else {
